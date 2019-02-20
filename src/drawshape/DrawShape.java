@@ -19,6 +19,8 @@ import java.awt.RenderingHints;
 //import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author hiroki
@@ -34,16 +36,26 @@ public class DrawShape {
 			System.out.println("Please input # of jump: ");
 			int jump = TextIO.getlnInt(); // IllegalArgumentException is handled; looped until legal input
 			
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					createAndShowGUI(sides, jump);
-				}
-			});
+			JFrame prevFrame = new JFrame(); // fake frame to be disposed on first one' appearance
+			JFrame currentFrame;
+
+			for (int i=2; i<sides; i++) {
+				currentFrame = createAndShowGUI(i, jump);
+				prevFrame.dispose();
+				prevFrame = currentFrame;
+			}
+//			SwingUtilities.invokeLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					for (int i=0; i<sides; i++) {
+//						createAndShowGUI(i, jump);
+//					}
+//				}
+//			});
 		}
 	}
 	
-	private static void createAndShowGUI(int sides, int jump) {
+	private static JFrame createAndShowGUI(int sides, int jump) {
 //		System.out.println("Created GUI on EDT? " +
 //			SwingUtilities.isEventDispatchThread());
 		
@@ -52,6 +64,13 @@ public class DrawShape {
 		f.add(new MyPanel(sides, jump));
 		f.pack();
 		f.setVisible(true);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException ex) {
+			Logger.getLogger(DrawShape.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return f;
 	}
   
 }  
