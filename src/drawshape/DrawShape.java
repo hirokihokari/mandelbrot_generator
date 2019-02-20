@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 public class DrawShape {
 	public static void main(String[] args) {
 		while (true) {
-			System.out.println("Please input # of sides: ");
-			int sides = TextIO.getlnInt(); // IllegalArgumentException is handled; looped until legal input
+			System.out.println("Please input max# of sides: ");
+			int maxSides = TextIO.getlnInt(); // IllegalArgumentException is handled; looped until legal input
 
 			System.out.println("Please input # of jump: ");
 			int jump = TextIO.getlnInt(); // IllegalArgumentException is handled; looped until legal input
@@ -39,8 +39,8 @@ public class DrawShape {
 			JFrame prevFrame = new JFrame(); // fake frame to be disposed on first one' appearance
 			JFrame currentFrame;
 
-			for (int i=2; i<sides; i++) {
-				currentFrame = createAndShowGUI(i, jump);
+			for (int sides=2; sides<maxSides; sides++) {
+				currentFrame = createAndShowGUI(sides, jump);
 				prevFrame.dispose();
 				prevFrame = currentFrame;
 			}
