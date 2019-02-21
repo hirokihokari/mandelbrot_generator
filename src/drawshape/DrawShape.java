@@ -36,13 +36,11 @@ public class DrawShape {
 			System.out.println("Please input # of jump: ");
 			int jump = TextIO.getlnInt(); // IllegalArgumentException is handled; looped until legal input
 			
-			JFrame prevFrame = new JFrame(); // fake frame to be disposed on first one' appearance
-			JFrame currentFrame;
-
+			// Use this frame for all rendering
+			JFrame existingFrame = new JFrame("Swing Draw Demo");
+			
 			for (int sides=2; sides<maxSides; sides++) {
-				currentFrame = createAndShowGUI(sides, jump);
-				prevFrame.dispose();
-				prevFrame = currentFrame;
+				existingFrame = createAndShowGUI(existingFrame, sides, jump);
 			}
 //			SwingUtilities.invokeLater(new Runnable() {
 //				@Override
@@ -55,17 +53,16 @@ public class DrawShape {
 		}
 	}
 	
-	private static JFrame createAndShowGUI(int sides, int jump) {
+	private static JFrame createAndShowGUI(JFrame f, int sides, int jump) {
 //		System.out.println("Created GUI on EDT? " +
 //			SwingUtilities.isEventDispatchThread());
-		
-		JFrame f = new JFrame("Swing Draw Demo");
+
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(new MyPanel(sides, jump));
 		f.pack();
 		f.setVisible(true);
 		try {
-			Thread.sleep(500);
+			Thread.sleep(100);
 		} catch (InterruptedException ex) {
 			Logger.getLogger(DrawShape.class.getName()).log(Level.SEVERE, null, ex);
 		}
